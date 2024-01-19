@@ -15,7 +15,7 @@ jobs:
     - name: Repository Dispatch
       uses: peter-evans/repository-dispatch@v2
       with:
-        token: ${{ secrets.PersonalAccessToken }}
+        token: ${{ secrets.SELENIUM_SECRET }}
         repository: mrsagar105/selenium-test-repo
         event-type: run-selenium-test
 		
