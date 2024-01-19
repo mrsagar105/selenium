@@ -9,7 +9,7 @@ on:
     branches: [ main, selenium-test-changes ]
 
 jobs:
-  dispatch:
+  trigger-test:
     runs-on: ubuntu-latest
     steps:
     - name: Repository Dispatch
