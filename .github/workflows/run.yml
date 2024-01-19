@@ -18,5 +18,4 @@ jobs:
         token: ${{ secrets.SELENIUM_SECRET }}
         repository: mrsagar105/selenium-test-repo
         event-type: run-selenium-test
-		
-
+	
