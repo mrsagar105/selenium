@@ -8,9 +8,6 @@ on:
   push:
     branches: [ main, selenium-test-changes ]
 
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
-
 jobs:
   dispatch:
     runs-on: ubuntu-latest
