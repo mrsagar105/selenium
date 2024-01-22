@@ -10,16 +10,45 @@ on:
 
 
 jobs:
-  # This workflow contains a single job called "build"
-  build:
-    # The type of runner that the job will run on
+  build-push:
     runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-    - name: Repository Dispatch
-      uses: peter-evans/repository-dispatch@v2
-      with:
-        token: ${{ secrets.SELENIUM_SECRET }}
-        repository: mrsagar105/selenium-test-repo
-        event-type: run-selenium-test
+      - uses: actions/checkout@v3
+      # Runs a single command using the runners shell
+      - name: Run a one-line script
+        run: echo Hello, world!
+
+  code-deploy-devl:
+    needs: build-push
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      # Runs a single command using the runners shell
+      - name: Run a one-line script
+        run: echo Hello, world1!
+
+  code-deploy-qual:
+    needs: build-push
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      # Runs a single command using the runners shell
+      - name: Run a two-line script
+        run: echo Hello, world2!
+
+  # This workflow contains a single job called "build"
+  trigger-selenium-test:
+    needs: [ code-deploy-devl, code-deploy-qual ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Selenium Test in Other Repository
+        env:
+          TOKEN: ${{ secrets.SELENIUM_SECRET }}
+          REPOSITORY: mrsagar105/selenium-test-repo
+          EVENT_TYPE: run-selenium-test
+        run: |
+          curl -X POST \
+          -H "Authorization: token $TOKEN" \
+          -H "Accept: application/vnd.github.v3+json" \
+          "https://api.github.com/repos/repos/$REPOSITORY/dispatches" \
+          -d '{"event_type": "'$EVENT_TYPE'"}'
